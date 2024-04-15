@@ -2,20 +2,21 @@ package org.example.productcatalogservice_april.dtos;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.example.productcatalogservice_april.models.Category;
 
 @Getter
 @Setter
-public class ProductDto {
+public class FakeStoreProductDto {
     private Long id;
 
-    private String name;
+    private String title;
 
     private String description;
 
-    private String imageUrl;
+    private String category;
 
     private Double price;
 
-    private Category category;
+    private String image;
+
+    private FakeStoreRatingDto rating;
 }
