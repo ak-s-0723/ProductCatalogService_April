@@ -3,6 +3,10 @@ package org.example.productcatalogservice_april.controllers;
 import org.example.productcatalogservice_april.dtos.ProductDto;
 import org.example.productcatalogservice_april.models.Product;
 import org.example.productcatalogservice_april.services.IProductService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,18 +23,29 @@ public class ProductController {
 
     @GetMapping
     public List<Product> getAllProducts() {
-        return null;
+        return productService.getAllProducts();
     }
 
     @GetMapping("{id}")
-    public Product getProduct(@PathVariable("id") Long productId) {
-      return productService.getProduct(productId);
+    public ResponseEntity<Product> getProduct(@PathVariable("id") Long productId) {
+        MultiValueMap<String,String> headers = new LinkedMultiValueMap<>();
+        headers.add("called by","smart frontend");
+        try {
+            if(productId < 1) {
+                headers.add("called by","pagal frontend");
+                throw new IllegalArgumentException("id is invalid");
+            }
+            Product product = productService.getProduct(productId);
+            return new ResponseEntity<>(product,headers,HttpStatus.OK);
+        } catch(Exception ex) {
+            return new ResponseEntity<>(headers,HttpStatus.BAD_REQUEST);
+        }
     }
 
 
     @PostMapping
-    public ProductDto createProduct(@RequestBody ProductDto productDto) {
-        return productDto;
+    public Product createProduct(@RequestBody ProductDto productDto) {
+        return productService.createProduct(productDto);
     }
 }
 

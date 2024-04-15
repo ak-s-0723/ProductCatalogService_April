@@ -6,9 +6,9 @@ import org.example.productcatalogservice_april.models.Category;
 import org.example.productcatalogservice_april.models.Product;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,7 +22,14 @@ public class ProductService implements IProductService {
 
     @Override
     public List<Product> getAllProducts() {
-        return null;
+        RestTemplate restTemplate = restTemplateBuilder.build();
+        //Compiler is unable to determine datatype of list which is generics, that's why we can't use List<FakeStoreProductDto>.class , instead using array
+        FakeStoreProductDto[] fakeStoreProductDtos = restTemplate.getForEntity("https://fakestoreapi.com/products/", FakeStoreProductDto[].class).getBody();
+        List<Product> products = new ArrayList<>();
+        for(FakeStoreProductDto fakeStoreProductDto : fakeStoreProductDtos) {
+            products.add(getProduct(fakeStoreProductDto));
+        }
+        return products;
     }
 
     @Override
@@ -33,8 +40,10 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public ProductDto createProduct(ProductDto productDto) {
-        return null;
+    public Product createProduct(ProductDto productDto) {
+        RestTemplate restTemplate = restTemplateBuilder.build();
+        FakeStoreProductDto fakeStoreProductDto = restTemplate.postForEntity("https://fakestoreapi.com/products",productDto,FakeStoreProductDto.class).getBody();
+        return getProduct(fakeStoreProductDto);
     }
 
     private Product getProduct(FakeStoreProductDto fakeStoreProductDto) {
