@@ -28,24 +28,19 @@ public class ProductController {
 
     @GetMapping("{id}")
     public ResponseEntity<Product> getProduct(@PathVariable("id") Long productId) {
-        MultiValueMap<String,String> headers = new LinkedMultiValueMap<>();
-        headers.add("called by","smart frontend");
-        try {
-            if(productId < 1) {
-                headers.add("called by","pagal frontend");
-                throw new IllegalArgumentException("id is invalid");
-            }
             Product product = productService.getProduct(productId);
-            return new ResponseEntity<>(product,headers,HttpStatus.OK);
-        } catch(Exception ex) {
-            return new ResponseEntity<>(headers,HttpStatus.BAD_REQUEST);
-        }
+            return new ResponseEntity<>(product,HttpStatus.OK);
     }
 
 
     @PostMapping
     public Product createProduct(@RequestBody ProductDto productDto) {
         return productService.createProduct(productDto);
+    }
+
+    @PutMapping("{id}")
+    public Product updateProduct(@PathVariable Long id, @RequestBody ProductDto productDto) {
+        return this.productService.replaceProduct(id,productDto);
     }
 }
 

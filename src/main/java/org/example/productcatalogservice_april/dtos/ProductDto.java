@@ -9,13 +9,13 @@ import org.example.productcatalogservice_april.models.Category;
 public class ProductDto {
     private Long id;
 
-    private String name;
+    private String title;
 
     private String description;
 
-    private String imageUrl;
+    private String image;
 
     private Double price;
 
-    private Category category;
+    private String category;
 }
