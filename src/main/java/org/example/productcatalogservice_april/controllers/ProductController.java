@@ -28,24 +28,45 @@ public class ProductController {
 
     @GetMapping("{id}")
     public ResponseEntity<Product> getProduct(@PathVariable("id") Long productId) {
-        MultiValueMap<String,String> headers = new LinkedMultiValueMap<>();
-        headers.add("called by","smart frontend");
-        try {
-            if(productId < 1) {
-                headers.add("called by","pagal frontend");
-                throw new IllegalArgumentException("id is invalid");
-            }
+//        MultiValueMap<String,String> headers = new LinkedMultiValueMap<>();
+//        headers.add("called by","smart frontend");
+//        try {
+//            if(productId < 1) {
+//                headers.add("called by","pagal frontend");
+//                throw new IllegalArgumentException("id is invalid");
+//            }
+//            Product product = productService.getProduct(productId);
+//            return new ResponseEntity<>(product,headers,HttpStatus.OK);
+//        } catch(Exception ex) {
+//            return new ResponseEntity<>(headers,HttpStatus.BAD_REQUEST);
+//        }
+
+
             Product product = productService.getProduct(productId);
-            return new ResponseEntity<>(product,headers,HttpStatus.OK);
-        } catch(Exception ex) {
-            return new ResponseEntity<>(headers,HttpStatus.BAD_REQUEST);
-        }
+            return new ResponseEntity<>(product,HttpStatus.OK);
+
     }
 
 
     @PostMapping
     public Product createProduct(@RequestBody ProductDto productDto) {
-        return productService.createProduct(productDto);
+        return productService.createProduct(getProduct(productDto));
+    }
+
+    @PutMapping("{id}")
+    public Product replaceProduct(@PathVariable("id") Long id,@RequestBody ProductDto productDto) {
+        return productService.replaceProduct(id,getProduct(productDto));
+    }
+
+    private Product getProduct(ProductDto productDto) {
+        Product product = new Product();
+        product.setId(productDto.getId());
+        product.setName(productDto.getName());
+        product.setPrice(productDto.getPrice());
+        product.setImageUrl(productDto.getImageUrl());
+        product.setDescription(productDto.getDescription());
+        product.setCategory(productDto.getCategory());
+        return product;
     }
 }
 
