@@ -21,7 +21,7 @@ public class Product extends BaseModel {
 
     private Double price;
     @JsonManagedReference
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.ALL)
     private Category category;
 
    // private boolean isPrimeSaleSpecific;
