@@ -1,9 +1,12 @@
 package org.example.productcatalogservice_april.controllers;
 
 import org.example.productcatalogservice_april.dtos.ProductDto;
+import org.example.productcatalogservice_april.models.Category;
 import org.example.productcatalogservice_april.models.Product;
 import org.example.productcatalogservice_april.services.IProductService;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -48,7 +51,7 @@ public class ProductController {
     }
 
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public Product createProduct(@RequestBody ProductDto productDto) {
         return productService.createProduct(getProduct(productDto));
     }
@@ -65,7 +68,12 @@ public class ProductController {
         product.setPrice(productDto.getPrice());
         product.setImageUrl(productDto.getImageUrl());
         product.setDescription(productDto.getDescription());
-        product.setCategory(productDto.getCategory());
+        Category category = new Category();
+        if(productDto.getCategoryDto() != null) {
+            category.setId(productDto.getCategoryDto().getId());
+            category.setName(productDto.getCategoryDto().getName());
+        }
+        product.setCategory(category);
         return product;
     }
 }
