@@ -9,6 +9,9 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.util.List;
 
@@ -22,6 +25,8 @@ public class Category extends BaseModel {
 
     //mappedBy , because we want JPA to consider this relation once only
     @JsonBackReference
-    @OneToMany(mappedBy = "category",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "category",fetch = FetchType.LAZY)
+    //@Fetch(FetchMode.SELECT)
+    //@BatchSize(size = 5)
     private List<Product> products;
 }
