@@ -63,7 +63,9 @@ class CategoryRepoTest {
     @Transactional
     void testQueries() {
         //List<Product> products = productRepo.findProductByPriceBetween(1000D,100012D);
-        List<Product> products = productRepo.findAllByOrderByIdDesc();
+        //List<Product> products = productRepo.findAllByOrderByIdDesc();
+        //String name = productRepo.getProductNameFromId(2L);
+        String c_name = productRepo.getCategoryNameFromProductId(2L);
         System.out.println("debug");
 
     }

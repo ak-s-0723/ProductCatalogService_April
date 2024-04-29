@@ -15,7 +15,7 @@ import jakarta.persistence.*;
 public class Product extends BaseModel {
     private String name;
 
-    //private Boolean isPrimeSpecial;
+   // private Boolean isPrimeSpecial;
 
     private String description;
 
