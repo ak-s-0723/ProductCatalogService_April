@@ -31,22 +31,23 @@ public class ProductController {
 
     @GetMapping("{id}")
     public ResponseEntity<Product> getProduct(@PathVariable("id") Long productId) {
-//        MultiValueMap<String,String> headers = new LinkedMultiValueMap<>();
-//        headers.add("called by","smart frontend");
-//        try {
-//            if(productId < 1) {
-//                headers.add("called by","pagal frontend");
-//                throw new IllegalArgumentException("id is invalid");
-//            }
-//            Product product = productService.getProduct(productId);
-//            return new ResponseEntity<>(product,headers,HttpStatus.OK);
-//        } catch(Exception ex) {
-//            return new ResponseEntity<>(headers,HttpStatus.BAD_REQUEST);
-//        }
-
-
+        MultiValueMap<String,String> headers = new LinkedMultiValueMap<>();
+        headers.add("called by","smart frontend");
+        try {
+            if(productId < 1) {
+                headers.add("called by","pagal frontend");
+                throw new IllegalArgumentException("id is invalid");
+            }
             Product product = productService.getProduct(productId);
-            return new ResponseEntity<>(product,HttpStatus.OK);
+            return new ResponseEntity<>(product,headers,HttpStatus.OK);
+        } catch(Exception ex) {
+            throw ex;
+            //return new ResponseEntity<>(headers,HttpStatus.BAD_REQUEST);
+        }
+
+
+           // Product product = productService.getProduct(productId);
+          //  return new ResponseEntity<>(product,HttpStatus.OK);
 
     }
 
