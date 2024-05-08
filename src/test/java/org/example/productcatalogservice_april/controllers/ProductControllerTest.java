@@ -1,9 +1,12 @@
 package org.example.productcatalogservice_april.controllers;
 
+import org.aspectj.lang.annotation.Before;
 import org.example.productcatalogservice_april.models.Product;
 import org.example.productcatalogservice_april.services.IProductService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -22,6 +25,9 @@ class ProductControllerTest {
     @MockBean
     //@Autowired
     private IProductService productService;
+
+    @Captor
+    private ArgumentCaptor<Long> idCaptor;
 
     //Test_Method_Params_Result
     @Test
@@ -63,5 +69,18 @@ class ProductControllerTest {
                 ()-> productController.getProduct(0L));
 
         verify(productService,times(0)).getProduct(0L);
+    }
+
+    @Test
+    public void Test_ProductServiceCalledWithExpectedArguments_Successfully() {
+        //Arrange
+        Long id = 2L;
+
+        //Act
+        productController.getProduct(id);
+
+        //Assert
+        verify(productService).getProduct(idCaptor.capture());
+        assertEquals(id,idCaptor.getValue());
     }
 }

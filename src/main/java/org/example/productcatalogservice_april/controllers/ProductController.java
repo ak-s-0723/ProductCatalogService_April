@@ -4,6 +4,8 @@ import org.example.productcatalogservice_april.dtos.ProductDto;
 import org.example.productcatalogservice_april.models.Category;
 import org.example.productcatalogservice_april.models.Product;
 import org.example.productcatalogservice_april.services.IProductService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,11 +20,15 @@ import java.util.List;
 @RequestMapping("/products")
 public class ProductController {
 
+    //@Qualifier is alternative of @Primary, whatever name you mention in this @Qualifier, it
+    //will get picked up
+    @Autowired
+    @Qualifier("productservicestub")
     private IProductService productService;
 
-    public ProductController(IProductService productService) {
-        this.productService = productService;
-    }
+//    public ProductController(IProductService productService) {
+//        this.productService = productService;
+//    }
 
     @GetMapping
     public List<Product> getAllProducts() {
