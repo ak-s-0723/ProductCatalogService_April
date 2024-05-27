@@ -23,7 +23,6 @@ public class ProductController {
     //@Qualifier is alternative of @Primary, whatever name you mention in this @Qualifier, it
     //will get picked up
     @Autowired
-    @Qualifier("productservicestub")
     private IProductService productService;
 
 //    public ProductController(IProductService productService) {
