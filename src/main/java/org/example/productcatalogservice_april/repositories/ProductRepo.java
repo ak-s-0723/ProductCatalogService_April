@@ -33,5 +33,5 @@ public interface ProductRepo extends JpaRepository<Product,Long> {
     @Query("select c.name from Product p join Category c on p.category.id=c.id and p.id=?1")
     String getCategoryNameFromProductId(Long id);
 
-    Page<Product> findByNameEqualsOrderB(String query, Pageable pageable);
+    Page<Product> findByNameEquals(String query, Pageable pageable);
 }
