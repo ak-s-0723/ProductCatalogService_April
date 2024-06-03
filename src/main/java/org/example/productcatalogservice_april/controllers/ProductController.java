@@ -29,6 +29,13 @@ public class ProductController {
 //        this.productService = productService;
 //    }
 
+
+    @GetMapping("{pid}/{uid}")
+    public Product getProductDetailsBasedOnUserScope(@PathVariable Long pid,@PathVariable Long uid) {
+       Product product = productService.getProductDetails(pid,uid);
+       return product;
+    }
+
     @GetMapping
     public List<Product> getAllProducts() {
         List<Product> products = productService.getAllProducts();

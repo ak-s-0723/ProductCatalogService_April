@@ -31,6 +31,12 @@ public class ProductService implements IProductService {
         this.fakeStoreApiClient = fakeStoreApiClient;
     }
 
+
+    @Override
+    public Product getProductDetails(Long productId, Long userId) {
+        return null;
+    }
+
     @Override
     public List<Product> getAllProducts() {
         RestTemplate restTemplate = restTemplateBuilder.build();
