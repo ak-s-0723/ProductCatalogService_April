@@ -18,6 +18,7 @@ import java.util.List;
 @Setter
 @Getter
 @Entity
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Category extends BaseModel {
     private String name;
 

@@ -10,7 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 import java.util.Optional;
 
-@Primary
+//@Primary
 @Service
 public class StorageProductService implements IProductService {
 

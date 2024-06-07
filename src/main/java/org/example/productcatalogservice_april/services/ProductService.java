@@ -7,6 +7,8 @@ import org.example.productcatalogservice_april.models.Category;
 import org.example.productcatalogservice_april.models.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Primary;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
@@ -19,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Primary
 @Service
 public class ProductService implements IProductService {
 
@@ -26,9 +29,12 @@ public class ProductService implements IProductService {
 
     private FakeStoreApiClient fakeStoreApiClient;
 
-    public ProductService(RestTemplateBuilder restTemplateBuilder, FakeStoreApiClient fakeStoreApiClient) {
+    private RedisTemplate<String,Object> redisTemplate;
+
+    public ProductService(RestTemplateBuilder restTemplateBuilder, FakeStoreApiClient fakeStoreApiClient,RedisTemplate<String,Object> redisTemplate) {
         this.restTemplateBuilder = restTemplateBuilder;
         this.fakeStoreApiClient = fakeStoreApiClient;
+        this.redisTemplate = redisTemplate;
     }
 
 
@@ -55,7 +61,22 @@ public class ProductService implements IProductService {
             throw new IllegalArgumentException("Invalid productId, please pass some valid id");
         }
 
-        FakeStoreProductDto fakeStoreProductDto = fakeStoreApiClient.getProduct(productId);
+         //check if product is in cache
+        //    return product
+        //else
+       //    call fakestore fakeStoreApiClient
+       //    store cache and return
+
+        FakeStoreProductDto fakeStoreProductDto = null;
+        fakeStoreProductDto = (FakeStoreProductDto) redisTemplate.opsForHash().get("PRODUCTS",productId);
+        if(fakeStoreProductDto != null) {
+            System.out.println("Found in Cache");
+            return getProduct(fakeStoreProductDto);
+        }
+
+        fakeStoreProductDto = fakeStoreApiClient.getProduct(productId);
+        System.out.println("Called FakeStore");
+        redisTemplate.opsForHash().put("PRODUCTS",productId,fakeStoreProductDto);
         return getProduct(fakeStoreProductDto);
     }
 
